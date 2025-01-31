@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Himawan Bowling Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f3f3f3;
+        }
+        .game-container {
+            text-align: center;
+        }
+        .score-board {
+            margin-bottom: 20px;
+        }
+        .pins {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pin {
+            width: 30px;
+            height: 60px;
+            background-color: #ff5e57;
+            margin: 5px;
+            border-radius: 5px;
+            transition: transform 0.2s;
+        }
+        .pin.fallen {
+            transform: translateY(30px) rotate(45deg);
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>Hi.io Bowling Game</h1>
+    <div class="score-board">
+        <p>Score: <span id="score">0</span></p>
+        <p>Throws Left: <span id="throws-left">3</span></p>
+    </div>
+    <div class="pins">
+        <div class="pin" id="pin1"></div>
+        <div class="pin" id="pin2"></div>
+        <div class="pin" id="pin3"></div>
+        <div class="pin" id="pin4"></div>
+        <div class="pin" id="pin5"></div>
+        <div class="pin" id="pin6"></div>
+        <div class="pin" id="pin7"></div>
+        <div class="pin" id="pin8"></div>
+        <div class="pin" id="pin9"></div>
+        <div class="pin" id="pin10"></div>
+    </div>
+    <div class="buttons">
+        <button id="throw-ball">Throw Ball</button>
+        <button id="reset-game">Reset Game</button>
+    </div>
+</div>
+
+<script>
+    let score = 0;
+    let throwsLeft = 3;
+
+    const pins = Array.from({ length: 10 }, (_, i) => document.getElementById(`pin${i + 1}`));
+    const scoreElement = document.getElementById('score');
+    const throwsLeftElement = document.getElementById('throws-left');
+    const throwBallButton = document.getElementById('throw-ball');
+    const resetGameButton = document.getElementById('reset-game');
+
+    function resetPins() {
+        pins.forEach(pin => {
+            pin.classList.remove('fallen');
+        });
+    }
+
+    function resetGame() {
+        score = 0;
+        throwsLeft = 3;
+        scoreElement.textContent = score;
+        throwsLeftElement.textContent = throwsLeft;
+        resetPins();
+    }
+
+    function knockPins() {
+        let knockedDown = Math.floor(Math.random() * 11); // Knockdown between 0 and 10 pins
+        for (let i = 0; i < knockedDown; i++) {
+            pins[i].classList.add('fallen');
+        }
+        score += knockedDown;
+        scoreElement.textContent = score;
+        throwsLeft -= 1;
+        throwsLeftElement.textContent = throwsLeft;
+        if (throwsLeft === 0) {
+            alert(`Game Over! Final Score: ${score}`);
+        }
+    }
+
+    throwBallButton.addEventListener('click', () => {
+        if (throwsLeft > 0) {
+            knockPins();
+        }
+    });
+
+    resetGameButton.addEventListener('click', resetGame);
+
+</script>
+
+</body>
+</html>
